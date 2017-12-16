@@ -10,6 +10,7 @@ public class CreateMeshFromChildren : MonoBehaviour {
     private MeshFilter meshFilter;
     [Range(0, 24)]
     public int shown;
+    public float width = 0.2f;
 
     /// <summary>
     /// Children starting top left going left-to-right, top-to-bottom
@@ -51,48 +52,82 @@ public class CreateMeshFromChildren : MonoBehaviour {
             }
         }
 
-        Vector3[] vertices = new Vector3[density * density];
-        Vector3[] normals = new Vector3[density * density];
-        Vector2[] uv = new Vector2[density * density];
-        int[] tri = new int[6 * ((density - 1) * (density - 1))];
+        Vector3[] vertices = new Vector3[density * density * 4];
+        Vector3[] normals = new Vector3[density * density * 4];
+        Vector2[] uv = new Vector2[density * density * 4];
+        int[] tri = new int[(12 * (density - 1) * (density - 1)) + 12 * (density - 1)];
 
         int triIndex = 0;
+        int rowOffset = density * 4;
+        int columnOffset = 4;
+
         for (int y = 0; y < orderedChildren.GetLength(0); y++)
         {
-            int row = y * density;
+            int row = y * density * 4;
             for (int x = 0; x < orderedChildren.GetLength(1); x++)
             {
-                int column = x;
+                int column = x * 4;
 
-                vertices[column + row] = orderedChildren[x, y].position;
-                normals[column + row] = -Vector3.forward;
-                uv[column + row] = new Vector2((float)x / (density - 1), (float)y / (density - 1));
-                Debug.Log(String.Format("UX for {0}: {1}", orderedChildren[x, y].gameObject.name, uv[column + row]));
+                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * width;
+                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * width;
+                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * width;
+                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * width;
 
-                // for anything that's not the first row+column we set up the triangles
-                if (column == 0 || row == 0)
+                normals[column + row + 0] = -Vector3.forward;
+                normals[column + row + 1] = -Vector3.forward;
+                normals[column + row + 2] = -Vector3.forward;
+                normals[column + row + 3] = -Vector3.forward;
+                uv[column + row + 0] = Vector2.zero;
+                uv[column + row + 1] = Vector2.zero;
+                uv[column + row + 2] = Vector2.zero;
+                uv[column + row + 3] = Vector2.zero;
+
+                if (x == (orderedChildren.GetLength(0) - 1) || y == (orderedChildren.GetLength(1)-1))
                 {
-                    continue;
+                    if (x == (orderedChildren.GetLength(0) - 1) && y != 0)
+                    {
+                        // connect current dot to dot above
+                        tri[triIndex++] = (column - 0) + (row - 0);
+                        tri[triIndex++] = (column - 0) + (row - rowOffset) + 1;
+                        tri[triIndex++] = (column - 0) + (row - rowOffset) + 2;
+
+                        tri[triIndex++] = (column - 0) + (row - rowOffset) + 2;
+                        tri[triIndex++] = (column - 0) + (row - 0) + 3;
+                        tri[triIndex++] = (column - 0) + (row - 0);
+                    }
+
+                    if (y == (orderedChildren.GetLength(1) - 1) && x != 0)
+                    {
+                        // connect current dot to dot to the left
+                        tri[triIndex++] = (column - columnOffset) + (row) + 3;
+                        tri[triIndex++] = (column - columnOffset) + (row) + 2;
+                        tri[triIndex++] = (column - 0) + (row - 0) + 1;
+
+                        tri[triIndex++] = (column - 0) + (row - 0) + 1;
+                        tri[triIndex++] = (column - 0) + (row - 0);
+                        tri[triIndex++] = (column - columnOffset) + (row) + 3;
+                    }
                 }
+                else
+                {
+                    // connect current dot to dot below
+                    tri[triIndex++] = (column + 0) + (row + 0) + 2;
+                    tri[triIndex++] = (column + 0) + (row + rowOffset) + 3;
+                    tri[triIndex++] = (column + 0) + (row + rowOffset) + 0;
 
-                // Handles.Label(orderedChildren[x - 1, y - 1].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 1) + (row - density);
+                    tri[triIndex++] = (column + 0) + (row + rowOffset) + 0;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 1;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 2;
 
-                // Handles.Label(orderedChildren[x - 0, y - 0].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 0) + (row - 0);
+                    // connect current dot to dot to the right
+                    tri[triIndex++] = (column + columnOffset) + (row) + 1;
+                    tri[triIndex++] = (column + columnOffset) + (row) + 0;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 3;
 
-                // Handles.Label(orderedChildren[x - 1, y - 0].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 1) + (row - 0);
-
-
-                // Handles.Label(orderedChildren[x - 0, y - 0].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 0) + (row - 0);
-
-                // Handles.Label(orderedChildren[x - 1, y - 1].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 1) + (row - density);
-
-                // Handles.Label(orderedChildren[x - 0, y - 1].position, (triIndex == shown) ? String.Format("{0}", triIndex) : "");
-                tri[triIndex++] = (column - 0) + (row - density);
+                    tri[triIndex++] = (column + 0) + (row + 0) + 3;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 2;
+                    tri[triIndex++] = (column + columnOffset) + (row) + 1;
+                }
             }
         }
 
@@ -107,18 +142,26 @@ public class CreateMeshFromChildren : MonoBehaviour {
         Vector3[] vertices = meshFilter.mesh.vertices;
         for (int y = 0; y < orderedChildren.GetLength(0); y++)
         {
-            int row = y * density;
+            int row = y * density * 4;
             for (int x = 0; x < orderedChildren.GetLength(1); x++)
             {
-                int column = x;
+                int column = x * 4;
 
-                vertices[column + row] = orderedChildren[x, y].localPosition;
+                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * width;
+                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * width;
+                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * width;
+                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * width;
             }
         }
         meshFilter.mesh.vertices = vertices;
+
+        for (int i = 0; i < meshFilter.mesh.vertices.Length; i++)
+        {
+            Handles.Label(meshFilter.mesh.vertices[i], (i == shown) ? String.Format("{0}", i) : "");
+        }
     }
 
-    void Update()
+    void OnDrawGizmos()
     {
         RenderSquare();
     }
