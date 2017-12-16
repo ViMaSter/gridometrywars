@@ -1,5 +1,4 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
 using System;
 
@@ -174,9 +173,5 @@ public class CreateMeshFromChildren : MonoBehaviour {
     void Update()
     {
         RenderSquare();
-    }
-
-    void OnDrawGizmos()
-    {
     }
 }
