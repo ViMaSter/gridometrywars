@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Move : MonoBehaviour {
     public float move = 5.0f;
+    public Camera camera;
 
 	// Use this for initialization
 	void Start () {
@@ -31,11 +32,11 @@ public class Move : MonoBehaviour {
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            GetComponent<Camera>().orthographicSize += move * Time.deltaTime;
+            camera.orthographicSize += move * Time.deltaTime;
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            GetComponent<Camera>().orthographicSize -= move * Time.deltaTime;
+            camera.orthographicSize -= move * Time.deltaTime;
         }
 
     }
