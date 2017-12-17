@@ -48,14 +48,12 @@ public class CreateMeshFromChildren : MonoBehaviour {
 
         density = (int)countSqrt;
         orderedChildren = new Transform[density, density];
-        Debug.Log(String.Format("Found {0}x{0} vertices.", countSqrt));
 
         {
             int x = 0;
             int y = 0;
             foreach (Transform child in transform)
             {
-                Debug.Log(String.Format("Transform {0},{1}: Name '{2}'", x, y, child.gameObject.name));
                 orderedChildren[x, y] = child;
                 x++;
                 if (x == density)

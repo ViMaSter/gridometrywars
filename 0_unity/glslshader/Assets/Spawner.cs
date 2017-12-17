@@ -3,17 +3,30 @@ using System.Collections;
 
 public class Spawner : MonoBehaviour {
 
-    public Vector2 range;
-    public Transform Obj;
+    public Vector2 borderVertical;
+    public Vector2 borderHorizontal;
 
-	// Use this for initialization
-	void Start () {
-        InvokeRepeating("SpawnObject", 0.0f, Random.Range(1.0f, 2.0f));
+    public Transform enemyPrefab;
+    private int bulk = 1;
+    public float interval = 2.0f;
+
+    private void Start()
+    {
+        InvokeRepeating("SpawnEnemy", 0.0f, interval);
     }
 
-    // Update is called once per frame
-    void SpawnObject()
+    void SpawnEnemy()
     {
-        Instantiate(Obj, new Vector3(Random.Range(range.x, range.y), 20.0f, 0.0f), Quaternion.identity);
+        bulk += 2;
+
+        for (int i = 0; i < bulk; i++)
+        {
+            Vector2 position = new Vector2(
+                Random.Range(borderHorizontal.x, borderHorizontal.y),
+                Random.Range(borderVertical.x, borderVertical.y)
+            );
+
+            Instantiate(enemyPrefab, position, Quaternion.identity);
+        }
     }
 }

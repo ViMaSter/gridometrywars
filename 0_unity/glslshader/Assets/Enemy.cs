@@ -17,16 +17,49 @@ public class Enemy : MonoBehaviour {
     public float radius = 4.0f;
     public float intensity = 2.0f;
 
+    public Transform target;
+    public Vector3 currentLocation;
+    public float movementForce = 5.0f;
+
+    private void Start()
+    {
+        movementForce = Random.value * 200 + 200;
+        target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+    }
+
+    private void Update()
+    {
+        // add movement to player
+        Vector3 normalizedDir = target.position - transform.position;
+        normalizedDir.Normalize();
+        Vector2 targetDir = new Vector2(normalizedDir.x, normalizedDir.y);
+        GetComponent<Rigidbody2D>().AddForce(targetDir * movementForce * Time.deltaTime);
+
+        // update rotation based on current velocity
+        Vector2 v = GetComponent<Rigidbody2D>().velocity;
+        float angle = Mathf.Atan2(v.y, v.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Collision!");
-        OnDeath();
+        if (((1 << collision.gameObject.layer) & LayerMask.GetMask("Palletes")) == LayerMask.GetMask("Palletes"))
+        {
+            Debug.Log("Pallete collision!");
+            OnDeath();
+        }
+
+        if (((1 << collision.gameObject.layer) & LayerMask.GetMask("Player")) == LayerMask.GetMask("Player"))
+        {
+            Destroy(gameObject);
+        }
     }
 
     void OnDeath()
     {
         KnockBack();
-	}
+        Destroy(gameObject);
+    }
 
     void KnockBack()
     {
@@ -37,6 +70,5 @@ public class Enemy : MonoBehaviour {
         {
             hitColliders[i].GetComponent<Rigidbody2D>().AddExplosionForce(intensity, currentPosition, radius);
         }
-        Destroy(gameObject);
     }
 }
