@@ -14,12 +14,12 @@ public static class Rigidbody2DExtension
 public class Enemy : MonoBehaviour {
 
     [Header("Death properties")]
-    public float radius = 4.0f;
-    public float intensity = 2.0f;
+    public Transform residuePrefab;
 
-    public Transform target;
-    public Vector3 currentLocation;
-    public float movementForce = 5.0f;
+    private Transform target;
+    private float movementForce = 5.0f;
+
+
 
     private void Start()
     {
@@ -57,18 +57,7 @@ public class Enemy : MonoBehaviour {
 
     void OnDeath()
     {
-        KnockBack();
+        Instantiate(residuePrefab, gameObject.GetComponent<Transform>().position + new Vector3(0, 0, -1), Quaternion.identity);
         Destroy(gameObject);
-    }
-
-    void KnockBack()
-    {
-        Vector3 currentPosition = GetComponent<Transform>().position;
-
-        Collider2D[] hitColliders = Physics2D.OverlapCircleAll(currentPosition, radius, LayerMask.GetMask("BG"));
-        for (int i = 0; i < hitColliders.Length; i++)
-        {
-            hitColliders[i].GetComponent<Rigidbody2D>().AddExplosionForce(intensity, currentPosition, radius);
-        }
     }
 }

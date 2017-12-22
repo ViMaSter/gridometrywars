@@ -73,11 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7efb82fcffb8bd94e987f39904298059, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  radius: 2
-  intensity: 25
-  target: {fileID: 0}
-  currentLocation: {x: 0, y: 0, z: 0}
-  movementForce: 300
+  residuePrefab: {fileID: 430438, guid: 33be159e7438acb4d9145a451ddc2ec4, type: 2}
 --- !u!212 &21258450
 SpriteRenderer:
   m_ObjectHideFlags: 1
