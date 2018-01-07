@@ -30,6 +30,12 @@ public class CreateMeshFromChildren : MonoBehaviour {
                 cube.transform.parent = transform;
             }
         }
+
+        Transform min = transform.GetChild(0);
+        Transform max = transform.GetChild(transform.childCount - 1);
+        Bounds bounds = new Bounds();
+        bounds.SetMinMax(min.position, max.position);
+        Game.World.Instance.Map.Bounds = bounds;
     }
 
     void Start()

@@ -7,7 +7,7 @@ public class Spawner : MonoBehaviour {
     public Vector2 borderHorizontal;
 
     public Transform enemyPrefab;
-    private int bulk = 1;
+    private int bulk = 5;
     public float interval = 2.0f;
 
     private void Start()
@@ -17,8 +17,6 @@ public class Spawner : MonoBehaviour {
 
     void SpawnEnemy()
     {
-        bulk += 2;
-
         for (int i = 0; i < bulk; i++)
         {
             Vector2 position = new Vector2(

@@ -33,7 +33,6 @@ public class PostDeathEffect : MonoBehaviour
         while (lightComponent.intensity > 0)
         {
             lightComponent.intensity = com.spacepuppy.Tween.EaseMethods.GetEase(lightEasing)(Time.time - startTime, initialIntensity, -initialIntensity - 0.01f, fadeTime);
-            Debug.Log("Fade: " + lightComponent.intensity);
             yield return new WaitForEndOfFrame();
         }
     }
