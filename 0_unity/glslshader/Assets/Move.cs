@@ -5,33 +5,27 @@ public class Move : MonoBehaviour {
     public float move = 5.0f;
     private Vector3 currentVelocity;
 
-	public Vector3 GetNormalizedVelocity()
+    public Vector3 GetNormalizedVelocity()
     {
         return currentVelocity.normalized;
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        currentVelocity = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        { 
-            currentVelocity += new Vector3(0, move, 0);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            currentVelocity += new Vector3(0, -move, 0);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            currentVelocity += new Vector3(-move, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            currentVelocity += new Vector3(move, 0, 0);
-        }
 
-        transform.position += currentVelocity * Time.deltaTime;
+    public Vector3 GetInputVelocity()
+    {
+        Vector3 currentVelocity = Vector3.zero;
+        if (Input.GetAxisRaw("Horizontal") != 0.0f || Input.GetAxisRaw("Vertical") != 0.0f)
+        {
+            currentVelocity += new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
+        }
+        return currentVelocity;
+    }
+
+    // Update is called once per frame
+    void Update ()
+    {
+        currentVelocity = GetInputVelocity();
+
+        transform.position += currentVelocity * move * Time.deltaTime;
 
         if (!Game.World.Instance.Map.Bounds.ContainBounds(transform.GetComponent<Collider2D>().bounds))
         {
@@ -49,5 +43,6 @@ public class Move : MonoBehaviour {
             }
         }
 
+        transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(currentVelocity.y, currentVelocity.x));
     }
 }

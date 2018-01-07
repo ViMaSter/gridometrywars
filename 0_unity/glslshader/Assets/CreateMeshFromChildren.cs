@@ -9,7 +9,10 @@ public class CreateMeshFromChildren : MonoBehaviour {
     private MeshFilter meshFilter;
     public int shown;
     [Range(0, 0.15f)]
-    public float width = 0.2f;
+    public float lineWidth = 0.025f;
+    [Range(1.0f, 2.0f)]
+    public float gridOffset = 1.0f;
+
 
     public Transform child;
 
@@ -26,7 +29,7 @@ public class CreateMeshFromChildren : MonoBehaviour {
         {
             for (int x = -size/2; x < size/2; x++)
             {
-                Transform cube = (Transform)Instantiate(child, new Vector3(x, -y, 0), Quaternion.identity);
+                Transform cube = (Transform)Instantiate(child, new Vector3(x * gridOffset, -y * gridOffset, 0), Quaternion.identity);
                 cube.transform.parent = transform;
             }
         }
@@ -86,10 +89,10 @@ public class CreateMeshFromChildren : MonoBehaviour {
             {
                 int column = x * 4;
 
-                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * width;
-                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * width;
-                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * width;
-                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * width;
+                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * lineWidth;
+                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * lineWidth;
+                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * lineWidth;
+                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * lineWidth;
 
                 normals[column + row + 0] = -Vector3.forward;
                 normals[column + row + 1] = -Vector3.forward;
@@ -165,10 +168,10 @@ public class CreateMeshFromChildren : MonoBehaviour {
             {
                 int column = x * 4;
 
-                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * width;
-                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * width;
-                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * width;
-                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * width; 
+                vertices[column + row + 0] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, -0.5f, 0) * lineWidth;
+                vertices[column + row + 1] = orderedChildren[x, y].localPosition + new Vector3(-0.5f, 0.5f, 0) * lineWidth;
+                vertices[column + row + 2] = orderedChildren[x, y].localPosition + new Vector3(0.5f, 0.5f, 0) * lineWidth;
+                vertices[column + row + 3] = orderedChildren[x, y].localPosition + new Vector3(0.5f, -0.5f, 0) * lineWidth; 
             }
         }
         meshFilter.mesh.vertices = vertices;
