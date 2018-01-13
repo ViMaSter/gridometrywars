@@ -108,13 +108,13 @@ public class CreateMeshFromChildren : MonoBehaviour {
                     if (x == (orderedChildren.GetLength(0) - 1) && y != 0)
                     {
                         // connect current dot to dot above
-                        tri[triIndex++] = (column - 0) + (row - 0);
                         tri[triIndex++] = (column - 0) + (row - rowOffset) + 1;
+                        tri[triIndex++] = (column - 0) + (row - 0);
                         tri[triIndex++] = (column - 0) + (row - rowOffset) + 2;
 
                         tri[triIndex++] = (column - 0) + (row - rowOffset) + 2;
-                        tri[triIndex++] = (column - 0) + (row - 0) + 3;
                         tri[triIndex++] = (column - 0) + (row - 0);
+                        tri[triIndex++] = (column - 0) + (row - 0) + 3;
                     }
 
                     if (y == (orderedChildren.GetLength(1) - 1) && x != 0)
@@ -132,13 +132,13 @@ public class CreateMeshFromChildren : MonoBehaviour {
                 else
                 {
                     // connect current dot to dot below
-                    tri[triIndex++] = (column + 0) + (row + 0) + 2;
                     tri[triIndex++] = (column + 0) + (row + rowOffset) + 3;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 2;
                     tri[triIndex++] = (column + 0) + (row + rowOffset) + 0;
 
                     tri[triIndex++] = (column + 0) + (row + rowOffset) + 0;
-                    tri[triIndex++] = (column + 0) + (row + 0) + 1;
                     tri[triIndex++] = (column + 0) + (row + 0) + 2;
+                    tri[triIndex++] = (column + 0) + (row + 0) + 1;
 
                     // connect current dot to dot to the right
                     tri[triIndex++] = (column + columnOffset) + (row) + 1;
