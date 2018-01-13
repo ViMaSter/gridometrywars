@@ -29,7 +29,7 @@ public class CreateMeshFromChildren : MonoBehaviour {
         {
             for (int x = -size/2; x < size/2; x++)
             {
-                Transform cube = (Transform)Instantiate(child, new Vector3(x * gridOffset, -y * gridOffset, 0), Quaternion.identity);
+                Transform cube = (Transform)Instantiate(child, new Vector3(x * gridOffset, y * gridOffset, 0), Quaternion.identity);
                 cube.transform.parent = transform;
             }
         }
