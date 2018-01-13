@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PalleteMove : MonoBehaviour {
+public class PaletteMove : MonoBehaviour {
 
     public float speed = 15.0f;
     private float deadZoneBuffer = 1.0f;

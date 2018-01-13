@@ -33,11 +33,11 @@ public class Fire : MonoBehaviour {
         if (lastShotAt + nextShotAt <= Time.time)
         {
             Instantiate(paletteObject, transform.position, Quaternion.Euler(0, 0, 180 + Mathf.Rad2Deg * Mathf.Atan2(direction.x, -direction.y)));
-            foreach (Pallete palleteScript in paletteObject.GetComponentsInChildren<Pallete>())
+            foreach (Palette paletteScript in paletteObject.GetComponentsInChildren<Palette>())
             {
-                palleteScript.SetLayers(gameObject.layer, paletteTargetLayer);
+                paletteScript.SetLayers(gameObject.layer, paletteTargetLayer);
             }
-            paletteObject.GetComponent<PalleteMove>().SetOriginVelocity(GetComponent<Move>().GetIntendedVelocity());
+            paletteObject.GetComponent<PaletteMove>().SetOriginVelocity(GetComponent<Move>().GetIntendedVelocity());
 
             lastShotAt = Time.time;
         }

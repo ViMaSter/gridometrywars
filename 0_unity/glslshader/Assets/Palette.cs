@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Pallete : MonoBehaviour
+public class Palette : MonoBehaviour
 {
     public UnityLayer originLayer;
     public UnityLayer targetLayer;
