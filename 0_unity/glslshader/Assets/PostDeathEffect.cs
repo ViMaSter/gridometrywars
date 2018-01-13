@@ -11,7 +11,8 @@ public class PostDeathEffect : MonoBehaviour
     public com.spacepuppy.Tween.EaseStyle lightEasing;
     public float fadeTime = 3.0f;
 
-    void Start () {
+    void Start ()
+    { 
         DoShockwave();
         StartCoroutine(KillAfter(DoLightFade()));
 	}
