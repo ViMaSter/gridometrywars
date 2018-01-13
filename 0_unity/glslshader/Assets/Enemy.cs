@@ -54,9 +54,14 @@ public class Enemy : MonoBehaviour {
         yield return new WaitForEndOfFrame();
         SwitchState(State.Alive);
         float startTime = Time.time;
+        BoxCollider2D collider = GetComponent<BoxCollider2D>();
         while ((Time.time - startTime) < fadeTime)
         {
             float size = com.spacepuppy.Tween.ConcreteEaseMethods.BackEaseOutFull(Time.time - startTime, 0.0f, 1.0f, fadeTime, 5.0f);
+            if (size > 0.01)
+            {
+                collider.enabled = true;
+            }
             transform.localScale = Vector3.one * size;
             yield return new WaitForEndOfFrame();
         }
