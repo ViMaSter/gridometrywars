@@ -14,6 +14,7 @@ public class CameraFollow : MonoBehaviour {
     void Awake()
     {
         moveScript = target.GetComponent<Move>();
+        currentTargetPosition = transform.position = target.position - new Vector3(0, 0, 5);
     }
 
     void UpdatePosition()
