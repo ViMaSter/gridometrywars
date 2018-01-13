@@ -15,15 +15,15 @@ public static class BoundsExtension
         {
             if (target.min.x < bounds.min.x)
             {
-                leakingOffset.x = bounds.min.x - target.min.x;
+                leakingOffset.x = -(target.min.x - bounds.min.x);
             }
-            if (target.min.y > bounds.min.y)
+            if (target.min.y < bounds.min.y)
             {
-                leakingOffset.y = bounds.min.y - target.min.y;
+                leakingOffset.y = -(target.min.y - bounds.min.y);
             }
             if (target.min.z < bounds.min.z)
             {
-                leakingOffset.z = bounds.min.z - target.min.z;
+                leakingOffset.z = -(target.min.z - bounds.min.z);
             }
         }
 
@@ -31,15 +31,15 @@ public static class BoundsExtension
         {
             if (target.max.x > bounds.max.x)
             {
-                leakingOffset.x = bounds.max.x - target.max.x;
+                leakingOffset.x = -(target.max.x - bounds.max.x);
             }
-            if (target.max.y < bounds.max.y)
+            if (target.max.y > bounds.max.y)
             {
-                leakingOffset.y = bounds.max.y - target.max.y;
+                leakingOffset.y = -(target.max.y - bounds.max.y);
             }
             if (target.max.z > bounds.max.z)
             {
-                leakingOffset.z = bounds.max.z - target.max.z;
+                leakingOffset.z = -(target.max.z - bounds.max.z);
             }
         }
         return leakingOffset;

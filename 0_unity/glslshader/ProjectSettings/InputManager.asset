@@ -35,7 +35,7 @@ InputManager:
     snap: 1
     invert: 0
     type: 0
-    axis: 1
+    axis: 2
     joyNum: 0
   - serializedVersion: 3
     m_Name: Horizontal
@@ -67,7 +67,7 @@ InputManager:
     snap: 1
     invert: 1
     type: 2
-    axis: 2
+    axis: 1
     joyNum: 0
   - serializedVersion: 3
     m_Name: Fire
@@ -99,7 +99,7 @@ InputManager:
     snap: 1
     invert: 0
     type: 2
-    axis: 3
+    axis: 2
     joyNum: 0
   - serializedVersion: 3
     m_Name: Fire Y
@@ -115,5 +115,5 @@ InputManager:
     snap: 1
     invert: 1
     type: 2
-    axis: 6
+    axis: 5
     joyNum: 0

@@ -4,6 +4,12 @@ using System.Collections;
 public class Move : MonoBehaviour {
     public float move = 5.0f;
     private Vector3 currentVelocity;
+    private Vector3 intendedVelocity;
+
+    public Vector3 GetIntendedVelocity()
+    {
+        return intendedVelocity;
+    }
 
     public Vector3 GetNormalizedVelocity()
     {
@@ -24,25 +30,17 @@ public class Move : MonoBehaviour {
     void Update ()
     {
         currentVelocity = GetInputVelocity();
+        intendedVelocity = currentVelocity * move;
 
-        transform.position += currentVelocity * move * Time.deltaTime;
-
-        if (!Game.World.Instance.Map.Bounds.ContainBounds(transform.GetComponent<Collider2D>().bounds))
+        Bounds predictedBounds = transform.GetComponent<Collider2D>().bounds;
+        predictedBounds.center += intendedVelocity;
+        if (!Game.World.Instance.Map.Bounds.ContainBounds(predictedBounds))
         {
             Vector3 leakingDirection = Game.World.Instance.Map.Bounds.LeakingDirection(transform.GetComponent<Collider2D>().bounds);
-            transform.position += leakingDirection;
-
-            if (leakingDirection.x != 0.0f)
-            {
-                currentVelocity.x = 0;
-            }
-
-            if (leakingDirection.y != 0.0f)
-            {
-                currentVelocity.y = 0;
-            }
+            intendedVelocity += leakingDirection;
         }
 
+        transform.position += intendedVelocity * Time.deltaTime;
         transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(currentVelocity.y, currentVelocity.x));
     }
 }

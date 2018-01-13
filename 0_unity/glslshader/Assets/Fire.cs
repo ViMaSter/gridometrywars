@@ -3,9 +3,11 @@ using System.Collections;
 
 public class Fire : MonoBehaviour {
 
-    public Transform palette;
-    private float lastShotAt = -1;
+    public Transform paletteObject;
+    public UnityLayer paletteTargetLayer;
     public float nextShotAt = 0.2f;
+
+    private float lastShotAt = -1;
 
     // Update is called once per frame
     void Update ()
@@ -30,7 +32,12 @@ public class Fire : MonoBehaviour {
     {
         if (lastShotAt + nextShotAt <= Time.time)
         {
-            Instantiate(palette, GetComponent<Transform>().position, Quaternion.Euler(0, 0, 180 + Mathf.Rad2Deg * Mathf.Atan2(direction.x, -direction.y)));
+            Instantiate(paletteObject, transform.position, Quaternion.Euler(0, 0, 180 + Mathf.Rad2Deg * Mathf.Atan2(direction.x, -direction.y)));
+            foreach (Pallete palleteScript in paletteObject.GetComponentsInChildren<Pallete>())
+            {
+                palleteScript.SetLayers(gameObject.layer, paletteTargetLayer);
+            }
+            paletteObject.GetComponent<PalleteMove>().SetOriginVelocity(GetComponent<Move>().GetIntendedVelocity());
 
             lastShotAt = Time.time;
         }

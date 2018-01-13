@@ -13,21 +13,67 @@ public static class Rigidbody2DExtension
 
 public class Enemy : MonoBehaviour {
 
+    private enum State
+    {
+        NONE,
+        Spawning,
+        Alive
+    }
+
+    State currentState = State.NONE;
+
+    [Header("Spawning animation")]
+    public float fadeTime = 0.5f;
+
     [Header("Death properties")]
     public Transform residuePrefab;
 
     private Transform target;
     private float movementForce = 5.0f;
 
-
-
     private void Start()
     {
         movementForce = Random.value * 200 + 200;
         target = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        SwitchState(State.Spawning);
+    }
+
+    private void SwitchState(State newState)
+    {
+        switch (newState)
+        {
+            case State.Spawning:
+                StartCoroutine(Spawning());
+                break;
+        }
+        currentState = newState;
+    }
+
+    private IEnumerator Spawning()
+    {
+        yield return new WaitForEndOfFrame();
+        SwitchState(State.Alive);
+        float startTime = Time.time;
+        while ((Time.time - startTime) < fadeTime)
+        {
+            float size = com.spacepuppy.Tween.ConcreteEaseMethods.BackEaseOutFull(Time.time - startTime, 0.0f, 1.0f, fadeTime, 5.0f);
+            transform.localScale = Vector3.one * size;
+            yield return new WaitForEndOfFrame();
+        }
+        transform.localScale = Vector3.one;
     }
 
     private void Update()
+    {
+        switch (currentState)
+        {
+            case State.Alive:
+                Alive();
+                break;
+        }
+    }
+
+    private void Alive()
     {
         // add movement to player
         Vector3 normalizedDir = target.position - transform.position;
@@ -41,21 +87,7 @@ public class Enemy : MonoBehaviour {
         transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (((1 << collision.gameObject.layer) & LayerMask.GetMask("Palletes")) == LayerMask.GetMask("Palletes"))
-        {
-            Debug.Log("Pallete collision!");
-            OnDeath();
-        }
-
-        if (((1 << collision.gameObject.layer) & LayerMask.GetMask("Player")) == LayerMask.GetMask("Player"))
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    void OnDeath()
+    void OnPaletteCollision()
     {
         Instantiate(residuePrefab, gameObject.GetComponent<Transform>().position + new Vector3(0, 0, -1), Quaternion.identity);
         Destroy(gameObject);
