@@ -20,8 +20,8 @@ public class Spawner : MonoBehaviour {
         for (int i = 0; i < bulk; i++)
         {
             Vector2 position = new Vector2(
-                Random.Range(borderHorizontal.x, borderHorizontal.y),
-                Random.Range(borderVertical.x, borderVertical.y)
+                Random.Range(Game.World.Instance.Map.Bounds.min.x, Game.World.Instance.Map.Bounds.max.x),
+                Random.Range(Game.World.Instance.Map.Bounds.min.y, Game.World.Instance.Map.Bounds.max.y)
             );
 
             Instantiate(enemyPrefab, position, Quaternion.identity);
