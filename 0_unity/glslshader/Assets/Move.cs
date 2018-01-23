@@ -40,7 +40,7 @@ public class Move : MonoBehaviour {
             intendedVelocity += leakingDirection;
         }
 
-        transform.position += intendedVelocity * Time.deltaTime;
+        transform.position += intendedVelocity * JSAPI.Instance.GetDeltaTime();
         transform.eulerAngles = new Vector3(0, 0, Mathf.Rad2Deg * Mathf.Atan2(currentVelocity.y, currentVelocity.x));
     }
 }

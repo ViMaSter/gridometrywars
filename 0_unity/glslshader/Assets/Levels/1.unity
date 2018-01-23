@@ -182,7 +182,7 @@ MonoBehaviour:
   borderVertical: {x: -18, y: 17}
   borderHorizontal: {x: -18, y: 17}
   enemyPrefab: {fileID: 423540, guid: 1982b180645b33b459775999bef8a14f, type: 2}
-  interval: 0.2
+  interval: 2
 --- !u!1 &729872862
 GameObject:
   m_ObjectHideFlags: 0
@@ -293,6 +293,7 @@ GameObject:
   m_Component:
   - 4: {fileID: 1349124232}
   - 114: {fileID: 1349124231}
+  - 114: {fileID: 1349124233}
   m_Layer: 0
   m_Name: World
   m_TagString: Untagged
@@ -323,3 +324,14 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+--- !u!114 &1349124233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1349124230}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e24a37d6626ffb941a064284027c5567, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

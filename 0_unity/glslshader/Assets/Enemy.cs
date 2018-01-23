@@ -84,7 +84,7 @@ public class Enemy : MonoBehaviour {
         Vector3 normalizedDir = target.position - transform.position;
         normalizedDir.Normalize();
         Vector2 targetDir = new Vector2(normalizedDir.x, normalizedDir.y);
-        GetComponent<Rigidbody2D>().AddForce(targetDir * movementForce * Time.deltaTime);
+        GetComponent<Rigidbody2D>().AddForce(targetDir * movementForce * JSAPI.Instance.GetDeltaTime());
 
         // update rotation based on current velocity
         Vector2 v = GetComponent<Rigidbody2D>().velocity;

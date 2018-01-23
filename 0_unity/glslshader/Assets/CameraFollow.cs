@@ -28,11 +28,11 @@ public class CameraFollow : MonoBehaviour {
     {
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            ownCamera.orthographicSize += 5.0f * Time.deltaTime;
+            ownCamera.orthographicSize += 5.0f * JSAPI.Instance.GetDeltaTime();
         }
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            ownCamera.orthographicSize -= 5.0f * Time.deltaTime;
+            ownCamera.orthographicSize -= 5.0f * JSAPI.Instance.GetDeltaTime();
         }
     }
 

@@ -20,7 +20,7 @@ public class PaletteMove : MonoBehaviour {
 
     void MoveWithSpeed()
     {
-        transform.position += GetComponent<Transform>().up * speed * Time.deltaTime;
+        transform.position += GetComponent<Transform>().up * speed * JSAPI.Instance.GetDeltaTime();
     }
 
     void ValidateDeadZone()
